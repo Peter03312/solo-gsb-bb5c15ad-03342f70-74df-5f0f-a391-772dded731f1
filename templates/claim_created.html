@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}认领申请已提交{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>✅ 认领申请已提交</h2>
+  <p>请立即保存您的<strong>查询凭证</strong>（仅本人可查询进度，请勿泄露）：</p>
+  <p class="token-box">{{ token }}</p>
+  <p>查询地址：<a href="{{ url_for('claim_status', token=token) }}">{{ url_for('claim_status', token=token, _external=True) }}</a></p>
+  <p class="muted">该凭证不会再次完整展示，请收藏本链接或记下凭证。工作人员核对结果将通过查询页公布。</p>
+  <a class="btn" href="{{ url_for('claim_status', token=token) }}">查看认领进度</a>
+</div>
+{% endblock %}

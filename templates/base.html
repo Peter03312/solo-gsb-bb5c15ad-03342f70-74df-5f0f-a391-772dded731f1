@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}失物认领{% endblock %}</title>
+  <style>
+    :root { --line:#d8dee4; --bg:#f6f8fa; --ink:#1f2328; --muted:#57606a; --accent:#0969da; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+           background:var(--bg); color:var(--ink); }
+    header { background:#24292f; color:#fff; padding:12px 20px; display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+    header a { color:#fff; text-decoration:none; }
+    header .brand { font-weight:600; }
+    main { max-width:880px; margin:24px auto; padding:0 16px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:8px; padding:16px 20px; margin-bottom:16px; }
+    .muted { color:var(--muted); font-size:13px; }
+    .tag { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; border:1px solid var(--line); }
+    .tag.open { background:#dafbe1; } .tag.matched { background:#fff8c5; }
+    .tag.returned { background:#ddf4ff; } .tag.removed { background:#f0f0f0; color:#666; }
+    .tag.pending { background:#fff8c5; } .tag.selected { background:#dafbe1; } .tag.not_selected { background:#f0f0f0; color:#666; }
+    input[type=text], input[type=password], textarea { width:100%; padding:8px; border:1px solid var(--line);
+      border-radius:6px; font-size:14px; margin:4px 0 12px; font-family:inherit; }
+    textarea { min-height:90px; }
+    button, .btn { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:8px 16px;
+      font-size:14px; cursor:pointer; text-decoration:none; display:inline-block; }
+    button.danger { background:#cf222e; }
+    button.secondary, .btn.secondary { background:#57606a; }
+    .flash { padding:10px 14px; border-radius:6px; margin-bottom:12px; }
+    .flash.ok { background:#dafbe1; } .flash.error { background:#ffebe9; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { text-align:left; padding:8px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14px; }
+    .code { font-family:ui-monospace,Menlo,monospace; font-size:26px; letter-spacing:2px; background:#f6f8fa;
+      border:1px dashed var(--line); border-radius:6px; padding:10px 16px; display:inline-block; }
+    .token-box { word-break:break-all; font-family:ui-monospace,Menlo,monospace; background:#fff8c5;
+      border:1px solid var(--line); border-radius:6px; padding:10px; }
+    form.inline { display:inline; }
+    nav a { margin-right:12px; }
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="{{ url_for('index') }}">🏷️ 场馆失物认领</a>
+  <nav>
+    <a href="{{ url_for('index') }}">失物列表</a>
+    <a href="{{ url_for('staff_items') }}">工作人员</a>
+  </nav>
+</header>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}<div class="flash {{ cat }}">{{ msg }}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

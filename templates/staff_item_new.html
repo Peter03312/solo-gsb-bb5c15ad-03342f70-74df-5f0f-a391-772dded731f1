@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}登记新物品{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>登记新物品</h2>
+  <form method="post">
+    <label>公开描述（访客可见，如“黑色双肩包一只”）</label>
+    <textarea name="public_desc" required maxlength="2000"></textarea>
+    <label>私密辨认特征（仅工作人员可见，用于核对认领人答案）</label>
+    <textarea name="private_features" required maxlength="2000"></textarea>
+    <button type="submit">登记</button>
+    <a class="btn secondary" href="{{ url_for('staff_items') }}">返回</a>
+  </form>
+</div>
+{% endblock %}

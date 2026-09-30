@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}工作人员 - 物品管理{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>物品管理</h2>
+  <p>
+    <a class="btn" href="{{ url_for('staff_item_new') }}">＋ 登记新物品</a>
+    <a class="btn secondary" href="{{ url_for('staff_verify') }}">核销交还码</a>
+  </p>
+  <form class="inline" method="post" action="{{ url_for('staff_logout') }}">
+    <button type="submit" class="secondary">退出登录</button>
+  </form>
+</div>
+<div class="card">
+<table>
+  <tr><th>#</th><th>公开描述</th><th>状态</th><th>认领申请</th><th>登记时间 (UTC)</th></tr>
+  {% for item in items %}
+  <tr>
+    <td><a href="{{ url_for('staff_item_detail', item_id=item.id) }}">#{{ item.id }}</a></td>
+    <td>{{ item.public_desc }}</td>
+    <td><span class="tag {{ item.status }}">{{ status_label[item.status] }}</span></td>
+    <td>{{ item.claim_count }} 份{% if item.pending_count %}（{{ item.pending_count }} 待核对）{% endif %}</td>
+    <td class="muted">{{ item.created_at }}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" class="muted">暂无登记物品。</td></tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

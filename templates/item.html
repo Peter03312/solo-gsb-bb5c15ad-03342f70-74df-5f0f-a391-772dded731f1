@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}物品 #{{ item.id }}{% endblock %}
+{% block content %}
+<div class="card">
+  <span class="tag {{ item.status }}">{{ status_label[item.status] }}</span>
+  <h2>#{{ item.id }} {{ item.public_desc }}</h2>
+  <p class="muted">登记时间：{{ item.created_at }} (UTC)</p>
+</div>
+<div class="card">
+  {% if item.status == 'open' %}
+  <h3>这是我的物品</h3>
+  <p class="muted">请描述只有失主才知道的辨认特征（如内含物、标记、序列号等），并留下联系方式。
+     提交后系统会给出查询凭证，请妥善保存。您提交的内容仅工作人员可见。</p>
+  <form method="post" action="{{ url_for('submit_claim', item_id=item.id) }}">
+    <label>辨认答案（描述该物品的私密特征）</label>
+    <textarea name="answer" required maxlength="2000"></textarea>
+    <label>联系方式（电话 / 邮箱 / 微信等）</label>
+    <input type="text" name="contact" required maxlength="200">
+    <button type="submit">提交认领申请</button>
+  </form>
+  {% else %}
+  <p>该物品当前状态为「{{ status_label[item.status] }}」，不再接受新的认领申请。</p>
+  {% endif %}
+</div>
+{% endblock %}

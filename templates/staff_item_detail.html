@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}物品 #{{ item.id }} 管理{% endblock %}
+{% block content %}
+<div class="card">
+  <span class="tag {{ item.status }}">{{ status_label[item.status] }}</span>
+  <h2>#{{ item.id }} {{ item.public_desc }}</h2>
+  <p><strong>私密辨认特征（仅工作人员可见）：</strong></p>
+  <p>{{ item.private_features }}</p>
+  <p class="muted">登记：{{ item.created_at }} (UTC) ｜ 更新：{{ item.updated_at }} (UTC)</p>
+  {% if item.status in ('open', 'matched') %}
+  <form class="inline" method="post" action="{{ url_for('staff_remove_item', item_id=item.id) }}"
+        onsubmit="return confirm('撤下后将拒绝新的认领申请，确定撤下？');">
+    <button type="submit" class="danger">撤下物品</button>
+  </form>
+  {% endif %}
+  <a class="btn secondary" href="{{ url_for('staff_items') }}">返回列表</a>
+</div>
+
+<div class="card">
+  <h3>认领申请（{{ claims|length }} 份）</h3>
+  {% if claims %}
+  <table>
+    <tr><th>#</th><th>辨认答案</th><th>联系方式</th><th>状态</th><th>提交时间 (UTC)</th><th>操作</th></tr>
+    {% for c in claims %}
+    <tr>
+      <td>#{{ c.id }}</td>
+      <td style="white-space:pre-wrap">{{ c.answer }}</td>
+      <td>{{ c.contact }}</td>
+      <td><span class="tag {{ c.status }}">{{ claim_label[c.status] }}</span></td>
+      <td class="muted">{{ c.created_at }}</td>
+      <td>
+        {% if item.status == 'open' and c.status == 'pending' %}
+        <form class="inline" method="post"
+              action="{{ url_for('staff_select_claim', item_id=item.id, claim_id=c.id) }}"
+              onsubmit="return confirm('选定该认领后，其余申请将标记为未获选，且不可撤销。确认选定？');">
+          <button type="submit">选定此认领</button>
+        </form>
+        {% else %}—{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">暂无认领申请。</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}失物列表{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>待认领物品</h2>
+  <p class="muted">以下仅展示物品公开描述。如认为某件物品属于您，请进入详情提交辨认信息。</p>
+</div>
+{% for item in items %}
+<div class="card">
+  <span class="tag {{ item.status }}">{{ status_label[item.status] }}</span>
+  <h3><a href="{{ url_for('item_detail', item_id=item.id) }}">#{{ item.id }} {{ item.public_desc }}</a></h3>
+  <p class="muted">登记时间：{{ item.created_at }} (UTC)</p>
+</div>
+{% else %}
+<div class="card"><p class="muted">当前没有登记的物品。</p></div>
+{% endfor %}
+{% endblock %}

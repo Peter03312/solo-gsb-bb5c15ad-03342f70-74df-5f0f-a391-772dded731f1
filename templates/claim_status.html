@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}认领进度{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>认领进度</h2>
+  <p>认领物品：#{{ claim.item_id }} {{ claim.public_desc }}</p>
+  <p>申请状态：<span class="tag {{ claim.status }}">{{ claim_label[claim.status] }}</span>
+     物品状态：<span class="tag {{ claim.item_status }}">{{ item_label[claim.item_status] }}</span></p>
+  <p class="muted">提交时间：{{ claim.created_at }} (UTC)</p>
+</div>
+
+{% if claim.status == 'selected' and claim.item_status == 'matched' %}
+<div class="card">
+  <h3>🎉 您的认领已获选</h3>
+  <p>请凭以下<strong>一次性交还码</strong>到服务台领取物品（{{ ttl }} 分钟内有效）：</p>
+  <p class="code">{{ code.code }}</p>
+  <p class="muted">有效期至 {{ code.expires_at }} (UTC)。交还码被工作人员核销后即失效，不可重复使用。</p>
+  <form method="post" action="{{ url_for('reissue_code', token=claim.token) }}"
+        onsubmit="return confirm('重发后旧码立即失效，确定重发？');">
+    <button type="submit" class="secondary">码已过期？重发新码</button>
+  </form>
+</div>
+{% elif claim.status == 'selected' and claim.item_status == 'returned' %}
+<div class="card"><p>✅ 物品已完成交还，感谢您的配合。</p></div>
+{% elif claim.status == 'not_selected' %}
+<div class="card"><p>很遗憾，本次认领未获选。如有疑问请联系场馆服务台。</p></div>
+{% elif claim.item_status == 'removed' %}
+<div class="card"><p>该物品已被撤下，认领申请终止。如有疑问请联系场馆服务台。</p></div>
+{% else %}
+<div class="card"><p>工作人员正在核对您的辨认信息，请稍后刷新本页查看结果。</p></div>
+{% endif %}
+{% endblock %}

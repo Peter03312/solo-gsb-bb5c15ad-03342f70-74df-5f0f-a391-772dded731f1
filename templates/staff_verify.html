@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}核销交还码{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>核销交还码</h2>
+  <p class="muted">认领人出示交还码后在此核销。核销成功即记录物品已交还；每个码仅可使用一次。</p>
+  <form method="post">
+    <label>交还码</label>
+    <input type="text" name="code" required autocomplete="off" placeholder="例如 ABCD-2345" style="text-transform:uppercase">
+    <button type="submit">核销并记录交还</button>
+    <a class="btn secondary" href="{{ url_for('staff_items') }}">返回列表</a>
+  </form>
+</div>
+{% if result %}
+<div class="card">
+  <div class="flash {{ result[0] }}">{{ result[1] }}</div>
+</div>
+{% endif %}
+{% endblock %}

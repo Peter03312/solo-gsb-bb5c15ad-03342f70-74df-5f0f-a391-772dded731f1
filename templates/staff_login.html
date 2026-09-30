@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}工作人员登录{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>工作人员登录</h2>
+  <form method="post">
+    <label>工作口令</label>
+    <input type="password" name="token" required autofocus>
+    <button type="submit">登录</button>
+  </form>
+</div>
+{% endblock %}
